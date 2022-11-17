@@ -1,0 +1,154 @@
+# Determinando o índice dos produtos
+variaveis_dos_produtos = {'Código': [], 'Nome produto': [], 'Fabricante':[],
+'Valor (R$)':[]}
+# Índice produtos
+dos_codigos = variaveis_dos_produtos['Código']
+dos_produtos = variaveis_dos_produtos['Nome produto']
+dos_fabricantes =variaveis_dos_produtos['Fabricante']
+dos_valores = variaveis_dos_produtos['Valor (R$)']
+# A variável
+numeracao_produto = 0
+# Os produtos
+def cadastrarProduto():
+ # Traduzindo a opção escolhida
+    print('Cadastrar produto inicializada!')
+ # Definindo as globais
+    global variaveis_dos_produtos
+    global numeracao_produto
+ # produtos while
+    while (True):
+       numeracao_produto += 1
+       codigo_produto_formatado = str(numeracao_produto).zfill(3)
+       print('Código do Produto {}.'.format(codigo_produto_formatado))
+ # Colocamos o código do produto do índice dos produtos no código de agora
+       variaveis_dos_produtos['Código'].append(codigo_produto_formatado)
+       produto = input('Nome do produto: ')
+       variaveis_dos_produtos['Nome produto'].append(produto)
+ # Nomeando fabricante
+       fabricante = input('Qual o fabricante? ')
+       variaveis_dos_produtos['Fabricante'].append(fabricante)
+ # Valor produtos
+       valor = input('Qual o valor (R$) do Produto?:R$ ')
+       variaveis_dos_produtos['Valor (R$)'].append(valor)
+       cadastrandoNovoProduto = input('Iremos cadastrar um novo produtor?(S/N): ').upper()
+       if (cadastrandoNovoProduto!= 'N'):
+          if(cadastrandoNovoProduto== 'S'):
+             continue
+          else:
+             sair()
+             continue
+       else:
+           sair()
+           break
+
+def consultarProduto():
+    try:
+     print('Consultar Produtos selecionado')
+     print('Enuncie a opção desejada:'
+     '\n1-Consultar Todos os Produtos' \
+     '\n2-Consultar Produto(s) por Código' \
+     '\n3-Consultar Produto(s) por Fabricante' \
+     '\n4-Retornar')
+     opcao_consulta = int(input('Seria:'))
+ # Atributos globalizados
+     global dos_codigos
+     dos_codigos = variaveis_dos_produtos['Código']
+     global dos_produtos
+     dos_produtos = variaveis_dos_produtos['Nome produto']
+     global dos_fabricantes
+     dos_fabricantes = variaveis_dos_produtos['Fabricante']
+     global dos_valores
+     dos_valores = variaveis_dos_produtos['Valor (R$)']
+     tam = len(dos_codigos)
+    #O tipo da consulta a ser feita verificando os produtos
+     if (opcao_consulta == selecao_de_opcao[0]):
+       print('-' * 30)
+ # Mostrando produtos
+       for x in range(0, tam, 1):
+           print('Código: ', dos_codigos[x])
+           print('Produto: ', dos_produtos[x])
+           print('Fabricante: ', dos_fabricantes[x])
+           print('Valor: R$ {:.2f}'.format(float(dos_valores[x])))
+           print('-' * 30)
+ # Consultando por chave código de produtos
+     elif (opcao_consulta == selecao_de_opcao[1]):
+        print('-' * 30)
+        try:
+            codigo_escolhido = int(input('Digite o CÓDIGO do Produto: ')) -1
+            print('Código: ', dos_codigos[codigo_escolhido])
+            print('Produto: ', dos_produtos[codigo_escolhido])
+            print('Fabricante: ', dos_fabricantes[codigo_escolhido])
+            print('Valor: R$ {:.2f}'.format(float(dos_valores[codigo_escolhido])))
+            print('-' * 30)
+        except:
+            print('Código inexistente!')
+            sair()
+     elif (opcao_consulta == selecao_de_opcao[2]):
+        print('-' * 30)
+        fabricante = input('Informe o fabricante: ')
+        for x in range(0, tam, 1):
+            if (dos_fabricantes[x] == fabricante):
+               print('Código: ', dos_codigos[x])
+               print('Produto: ', dos_produtos[x])
+               print('Fabricante: ', dos_fabricantes[x])
+               print('Valor: R$ {:.2f}'.format(float(dos_valores[x])))
+               print('-' * 30)
+     sair()
+    except Exception as e:
+         print('Erro. Apenas número é permitido.')
+         sair()
+#Retirando produtos
+def removerProduto():
+    try:
+       print('Removendo produtos iniciado!')
+       global numeracao_produto
+       tam = len(dos_codigos)
+       numeracao_produto = int(input('Informe o código do produto que deseja a remoção: '))
+       codigo_produto_remover = str(numeracao_produto).zfill(3)
+       if (tam > 0):
+           for x in range(0, tam, 1):
+               if (dos_codigos[x] == codigo_produto_remover):
+                   dos_codigos.remove(dos_codigos[x])
+                   dos_produtos.remove(dos_produtos[x])
+                   dos_fabricantes.remove(dos_fabricantes[x])
+                   dos_valores.remove(dos_valores[x])
+           sair()
+       else:
+            print('Não existe este produto D:')
+            sair()
+    except Exception as e:
+       sair()
+def sair():
+    iniciaControlEstoque()
+def opcaoInvalida():
+    print('Esta opção não foi validada, vamos mais uma vez!')
+#Apresentação do controle de estoque
+print('Controle de Estoque Mercearia de Maria Eduarda Nunes Ventura!')
+selecao_de_opcao = (1, 2, 3, 4)
+def iniciaControlEstoque():
+ opcao_desejada = 0
+ #Opções de controle de estoque
+ print('Escolha a opção desejada:' 
+ '\n1-Cadastrar Produto' 
+ '\n2-Consultar Produto(s)' 
+ '\n3-Remover Produto'
+       '\n4-Sair')
+ # Erro de valor que não seja número
+ try:
+     opcao_inicial_escolhida = int(input('Seria:'))
+     if (opcao_inicial_escolhida == selecao_de_opcao[0]):
+        cadastrarProduto()
+     elif (opcao_inicial_escolhida == selecao_de_opcao[1]):
+         consultarProduto()
+     elif (opcao_inicial_escolhida == selecao_de_opcao[2]):
+         removerProduto()
+     elif (opcao_inicial_escolhida == selecao_de_opcao[3]):
+         sair()
+     else:
+         opcaoInvalida()
+ except Exception as e:
+     print('Só é permitido número, ERRO!')
+     sair()
+
+
+iniciaControlEstoque()
